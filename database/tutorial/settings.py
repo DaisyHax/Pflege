@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'quickstart.apps.PflegeConfig',
-    'pipeline',
     'corsheaders',
+    'pipeline',	
 ]
 
 MIDDLEWARE = [
@@ -55,6 +55,41 @@ MIDDLEWARE = [
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+]
+
+PIPELINE = {
+    'STYLESHEETS': {
+        'colors': {
+            'source_filenames': (
+              'css/core.css',
+              'css/colors/*.css',
+              'css/layers.css'
+            ),
+            'output_filename': 'css/colors.css',
+            'extra_context': {
+                'media': 'screen,projection',
+            },
+        },
+    },
+    'JAVASCRIPT': {
+        'stats': {
+            'source_filenames': (
+              'js/jquery.js',
+              'js/d3.js',
+              'js/collections/*.js',
+              'js/application.js',
+            ),
+            'output_filename': 'js/stats.js',
+        }
+    }
+}
 
 ROOT_URLCONF = 'tutorial.urls'
 
